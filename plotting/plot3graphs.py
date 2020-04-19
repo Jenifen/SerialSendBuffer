@@ -91,18 +91,18 @@ def main():
     portName = '/dev/ttyACM0'
     baudRate = 38400
     maxPlotLength = 100     # number of points in x-axis of real time plot
-    dataNumBytes = 4        # number of bytes of 1 data point
+    dataNumBytes = 2        # number of bytes of 1 data point
     numPlots = 3            # number of plots in 1 graph
     s = serialPlot(portName, baudRate, maxPlotLength, dataNumBytes, numPlots)   # initializes all required variables
     s.readSerialStart()                                               # starts background thread
 
     # plotting starts below
     pltInterval = 50    # Period at which the plot animation updates [ms]
-    lineLabelText = ['X', 'Y', 'Z']
-    title = ['X Acceleration', 'Y Acceleration', 'Z Acceleration']
-    xLimit = [(0, maxPlotLength), (0, maxPlotLength), (0, maxPlotLength)]
-    yLimit = [(0, 1024), (0, 1024), (0, 1024)]
-    style = ['r-', 'g-', 'b-']    # linestyles for the different plots
+    lineLabelText = ['X', 'Y', 'Z', 'HH']
+    title = ['X Acceleration', 'Y Acceleration', 'Z Acceleration', 'HH Acceleration']
+    xLimit = [(0, maxPlotLength), (0, maxPlotLength), (0, maxPlotLength), (0, maxPlotLength)]
+    yLimit = [(0, 1024), (0, 1024), (0, 1024), (0, 1024)]
+    style = ['r-', 'g-', 'b-', 'b-']    # linestyles for the different plots
     anim = []
     for i in range(numPlots):
         fig, ax = makeFigure(xLimit[i], yLimit[i], title[i])

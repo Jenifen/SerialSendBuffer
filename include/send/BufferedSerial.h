@@ -10,6 +10,8 @@
 // include types & constants of Wiring core API
 #include "Arduino.h"
 #include<TimerOne.h>
+#include<stdarg.h>
+
 //#include <StandardCplusplus.h>
 
 //#include <vector>
@@ -23,53 +25,82 @@ class BufferedSerial
   public:
 
     BufferedSerial();
-    inline void begin(const unsigned int& baudrate){  Serial.begin(baudrate); }
-    void sendingRate(  unsigned long microseconds=1000000);
+    ~BufferedSerial();
     
-    inline void sizeElementBuffer(byte size) { size_ = size; }
+    void begin(const unsigned int& baudrate) const;
+    //void sendingRate(  unsigned long microseconds=1000000);
+    
+    inline void sizeElementBuffer(byte sizeElement, byte matchElement) 
+    { size_ = sizeElement;
+      matchElement_ = matchElement;
+    }
 
-    // One function works for all data types.  This would work 
-    // even for user defined types if operator '>' is overloaded 
-    template <typename T> T update(T* data1, T* data2, T* data3) 
+    /*
+     @brief : One method works for all data types.  This would work 
+              even for user defined types if operator '>' is overloaded 
+      @param data 
+    */
+    template <typename T> void update(T* data1, T* data2, T* data3 = NULL ) 
     { 
       
       byte* byteData1 = (byte*)(data1);
       byte* byteData2 = (byte*)(data2);
       byte* byteData3 = (byte*)(data3);
-        
-      if (size_ == 4)
-      {
-        byte buf[6] = {byteData1[0], byteData1[1],
-                    byteData2[0], byteData2[1],
-                    byteData3[0], byteData3[1]};
       
-        BufferedSerial::sendPacket(buf, sizeof(buf));
-      }
-      else if (size_ == 8) // double 
+      
+      if (size_ == sizeof(int))//4)
       {
-
-        byte buf[12] = {byteData1[0], byteData1[1], byteData1[2], byteData1[3],
-                      byteData2[0], byteData2[1], byteData2[2], byteData2[3],
-                      byteData3[0], byteData3[1], byteData3[2], byteData3[3]};
-  
-        BufferedSerial::sendPacket(buf, sizeof(buf));
-      } 
+        
+        for (byte i=0, j=2, k=4; i <= 1, j<=3, k<=5; i++, j++, k++)
+        {
+          buffer_[i] = byteData1[i];
+          buffer_[j] = byteData2[i];
+          if (data3 == NULL) buffer_[k] = 0; //buffer_[k] = 0;
+          else buffer_[k] = byteData3[i];
+        
+        }
+        BufferedSerial::sendPacket(buffer_, matchElement_ * 2); 
+      }
+      else if (size_ == sizeof(double))//8) // double 
+      {
 
    
-    }
-  
-  
+        for (byte i=0, j=4, k=8; i <= 3, j<=7, k<=11; i++, j++, k++)
+        {
+          buffer_[i] = byteData1[i];
+          buffer_[j] = byteData2[i];
+          if (data3 == NULL) buffer_[k] = 0 ;
+          else  buffer_[k] = byteData3[i];
 
+          
+        }
+  
+        BufferedSerial::sendPacket(buffer_, matchElement_ * 2);
+
+      }
+
+    } 
+
+    /*
+    * @brief method to get buffer 
+    * @return array 
+    */ 
+    inline byte* getBuffer() const {return buffer_; }; 
+
+    /*
+     * @brief method for  delete array to deallocate array
+    */
+    inline void clear() const { delete(buffer_); };
   // library-accessible "private" interface
   private:
-    inline void sendPacket(byte buf[], byte size) 
-      {
-        Serial.write(buf, size); 
-      }
+
+    inline void sendPacket(const byte buf[], const byte size) const 
+    {
+      Serial.write(buf, size); 
+    }
   
     byte size_ ;
-    TimerOne* timer;
-
+    byte* buffer_{ new byte[12]{0} };
+    byte matchElement_ ;
 };
-
 #endif

@@ -10,7 +10,7 @@ BufferedSerial::BufferedSerial()
 {
     //constructor empty
 }
-
+/*
 void BufferedSerial::sendingRate( unsigned long microseconds=1000000)
 {
 
@@ -18,4 +18,13 @@ void BufferedSerial::sendingRate( unsigned long microseconds=1000000)
   //timer->initialize(microseconds);
   //timer->attachInterrupt(isr);
 
+}*/
+void BufferedSerial::begin(const unsigned int& baudrate) const 
+{  
+  Serial.begin(baudrate); 
+}
+
+BufferedSerial::~BufferedSerial()
+{
+  BufferedSerial::clear();
 }
