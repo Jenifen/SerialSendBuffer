@@ -42,37 +42,28 @@ class BufferedSerial
     */
     template <typename T> void update(T* data1, T* data2, T* data3 = NULL ) 
     { 
-      
       byte* byteData1 = (byte*)(data1);
       byte* byteData2 = (byte*)(data2);
       byte* byteData3 = (byte*)(data3);
-      
-      
+          
       if (size_ == sizeof(int))//4
-      {
-        
+      { 
         for (byte i=0, j=2, k=4; i <= 1, j<=3, k<=5; i++, j++, k++)
         {
           buffer_[i] = byteData1[i];
           buffer_[j] = byteData2[i];
           buffer_[k] = (data3 == NULL) ? 0 : byteData3[i] ;
-    
         }
       }
       else if (size_ == sizeof(double))//8) // double 
       {
-
-   
         for (byte i=0, j=4, k=8; i <= 3, j<=7, k<=11; i++, j++, k++)
         {
           buffer_[i] = byteData1[i];
           buffer_[j] = byteData2[i];
           buffer_[k] = (data3 == NULL) ? 0 : byteData3[i] ;
-         
         }
-
       }
-
     } 
 
     /*
