@@ -10,15 +10,21 @@ BufferedSerial::BufferedSerial()
 {
     //constructor empty
 }
-/*
+
 void BufferedSerial::sendingRate( unsigned long microseconds=1000000)
 {
 
   microseconds = (microseconds < MIN_SENDING_RATE) ? MIN_SENDING_RATE : microseconds;
-  //timer->initialize(microseconds);
-  //timer->attachInterrupt(isr);
+  timer->initialize(microseconds);
+  
+}
 
-}*/
+void BufferedSerial::sizeElementBuffer(byte sizeElement, byte matchdata) 
+{ 
+  size_ = sizeElement;
+  matchdata_ = matchdata;
+}
+
 void BufferedSerial::begin(const unsigned int& baudrate) const 
 {  
   Serial.begin(baudrate); 

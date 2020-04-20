@@ -28,12 +28,9 @@ class BufferedSerial
     ~BufferedSerial();
     
     void begin(const unsigned int& baudrate) const;
-    //void sendingRate(  unsigned long microseconds=1000000);
+    void sendingRate(  unsigned long microseconds=1000000);
     
-    inline void sizeElementBuffer(byte sizeElement, byte matchElement) 
-    { size_ = sizeElement;
-      matchElement_ = matchElement;
-    }
+    void sizeElementBuffer(byte sizeElement, byte matchdata) ;
 
     /*
      @brief : One method works for all data types.  This would work 
@@ -59,7 +56,7 @@ class BufferedSerial
           else buffer_[k] = byteData3[i];
         
         }
-        BufferedSerial::sendPacket(buffer_, matchElement_ * 2); 
+        BufferedSerial::sendPacket(buffer_, matchdata_ * 2); 
       }
       else if (size_ == sizeof(double))//8) // double 
       {
@@ -75,7 +72,7 @@ class BufferedSerial
           
         }
   
-        BufferedSerial::sendPacket(buffer_, matchElement_ * 2);
+        BufferedSerial::sendPacket(buffer_, matchdata_ * 2);
 
       }
 
@@ -91,9 +88,20 @@ class BufferedSerial
      * @brief method for  delete array to deallocate array
     */
     inline void clear() const { delete(buffer_); };
+
+
+    /*
+    *
+    */
+    TimerOne* timer;
+ 
+    
   // library-accessible "private" interface
   private:
-
+    /*
+    *@brief sending buffer method 
+    @param array, size
+    */ 
     inline void sendPacket(const byte buf[], const byte size) const 
     {
       Serial.write(buf, size); 
@@ -101,6 +109,8 @@ class BufferedSerial
   
     byte size_ ;
     byte* buffer_{ new byte[12]{0} };
-    byte matchElement_ ;
+    byte matchdata_ ;
+
+    
 };
 #endif
