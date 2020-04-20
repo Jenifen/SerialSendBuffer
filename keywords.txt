@@ -1,0 +1,22 @@
+#######################################
+# Syntax Serial Send Buffer 
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+BufferedSerial	KEYWORD1
+
+#######################################
+# Methods and Functions 
+#######################################
+
+begin	            KEYWORD2
+sendingRate         KEYWORD3
+setSizeBuffer       KEYWORD4
+update              KEYWORD5
+getBuffer           KEYWORD6
+clear               KEYWORD7
+sendPacket          KEYWORD8
+########################################

@@ -1,7 +1,12 @@
 /*
-  BufferedSerial.h - BufferedSerial library forBuffering Data and Sending it via UART/Serial 
-  Copyright (c) 2020 Jenifen.  All right reserved.
-*/
+ * This file is part of SerialSendBuffer
+ * BufferedSerial.h - BufferedSerial library forBuffering Data and Sending it via UART/Serial
+ * 
+ * This program is free software: you can redistribute it and/or modify, 
+ * is distributed in the hope that it will be useful :)
+ * 
+ * Copyright (c) 2020 Jenifen Seifeddin.  All right reserved.
+ */
 
 // ensure this library description is only included once
 #ifndef BufferedSerial_h
@@ -10,13 +15,8 @@
 // include types & constants of Wiring core API
 #include "Arduino.h"
 #include<TimerOne.h>
-#include<stdarg.h>
 
-//#include <StandardCplusplus.h>
-
-//#include <vector>
-
-#define MIN_SENDING_RATE 100000 // 100ms
+#define MIN_SENDING_RATE 10000 // 10ms
 
 // library interface description
 class BufferedSerial
@@ -24,13 +24,16 @@ class BufferedSerial
   // user-accessible "public" interface
   public:
 
-    BufferedSerial();
+    BufferedSerial() = default;
     ~BufferedSerial();
     
     void begin(const unsigned int& baudrate) const;
-    void sendingRate(  unsigned long microseconds=1000000);
-    
-    void sizeElementBuffer(byte sizeElement, byte matchdata) ;
+    void sendingRate(const unsigned long& microseconds=MIN_SENDING_RATE) const ;
+    /*
+    * @brief method for set buffer size 
+    * @param size 
+    */ 
+    void setSizeBuffer(const byte& elements, const byte& size) ;
 
     /*
      @brief : One method works for all data types.  This would work 
@@ -45,18 +48,16 @@ class BufferedSerial
       byte* byteData3 = (byte*)(data3);
       
       
-      if (size_ == sizeof(int))//4)
+      if (size_ == sizeof(int))//4
       {
         
         for (byte i=0, j=2, k=4; i <= 1, j<=3, k<=5; i++, j++, k++)
         {
           buffer_[i] = byteData1[i];
           buffer_[j] = byteData2[i];
-          if (data3 == NULL) buffer_[k] = 0; //buffer_[k] = 0;
-          else buffer_[k] = byteData3[i];
-        
+          buffer_[k] = (data3 == NULL) ? 0 : byteData3[i] ;
+    
         }
-        BufferedSerial::sendPacket(buffer_, matchdata_ * 2); 
       }
       else if (size_ == sizeof(double))//8) // double 
       {
@@ -66,13 +67,9 @@ class BufferedSerial
         {
           buffer_[i] = byteData1[i];
           buffer_[j] = byteData2[i];
-          if (data3 == NULL) buffer_[k] = 0 ;
-          else  buffer_[k] = byteData3[i];
-
-          
+          buffer_[k] = (data3 == NULL) ? 0 : byteData3[i] ;
+         
         }
-  
-        BufferedSerial::sendPacket(buffer_, matchdata_ * 2);
 
       }
 
@@ -89,27 +86,27 @@ class BufferedSerial
     */
     inline void clear() const { delete(buffer_); };
 
-
     /*
+    *@brief sending buffer method 
     *
+    */ 
+    inline void sendPacket() const 
+    {
+      Serial.write(buffer_, elements_ * 2); 
+    }
+    /*
+    * 
     */
     TimerOne* timer;
  
     
   // library-accessible "private" interface
   private:
-    /*
-    *@brief sending buffer method 
-    @param array, size
-    */ 
-    inline void sendPacket(const byte buf[], const byte size) const 
-    {
-      Serial.write(buf, size); 
-    }
+    
   
     byte size_ ;
     byte* buffer_{ new byte[12]{0} };
-    byte matchdata_ ;
+    byte elements_ ;
 
     
 };

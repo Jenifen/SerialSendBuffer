@@ -1,11 +1,4 @@
-# SerialSendBuffer
-Arduino library to Buffering Data and Sending it via Serial Arduino
-
-
-# USE Example
-
-```bash
-#include<BufferedSerial.h>
+#include"BufferedSerial.h"
 
 #define RATE_SENDING 10000 // 10ms
 #define BAUD_RATE 38400
@@ -38,4 +31,3 @@ void loop()
     BuffSerial->update <TYPE_DATA> (&potValue1, &potValue2); // 2 data of type int 
 
 }
-```

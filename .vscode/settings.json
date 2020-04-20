@@ -1,0 +1,11 @@
+{
+    "python.autoComplete.extraPaths": [
+        "/home/jenifen/catkin_ws/devel/lib/python2.7/dist-packages",
+        "/opt/ros/melodic/lib/python2.7/dist-packages"
+    ],
+    "files.associations": {
+        "*.tcc": "cpp",
+        "iostream": "cpp",
+        "cstring": "cpp"
+    }
+}
