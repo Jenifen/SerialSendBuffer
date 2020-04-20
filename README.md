@@ -1,7 +1,7 @@
 # SerialSendBuffer
 Arduino library to Buffering Data and Sending it via Serial Arduino
 
-# PS
+## Info
 ```
 This is an example C++ library for Arduino , created by 
 [Jenifen Seifeddin]
