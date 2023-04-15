@@ -1,5 +1,5 @@
 # SerialSendBuffer
-Arduino library to Buffering Data and Sending it via Serial Arduino
+The SerialSendBuffer Arduino library is a software library that provides a buffering mechanism for data and sending it via serial communication. The library allows Arduino programs to store data in a buffer and send it to a connected device over a serial communication channel.
 
 ## Info
 ```
